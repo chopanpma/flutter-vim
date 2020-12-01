@@ -1,13 +1,11 @@
 FROM python:latest
-MAINTAINER Federico Gonzalez (https://github.com/fedeg/)
+MAINTAINER Francisco Castaneda (https://github.com/chopanpma/)
 
-RUN apt-get update \
- && apt-get --force-yes install -y curl vim exuberant-ctags git ack-grep vim-nox \
- && apt-get clean \
- && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-RUN pip install pep8 flake8 pyflakes isort yapf
+RUN apt update && apt install -y git curl python3-pip exuberant-ctags ack-grep
+RUN pip3 install pynvim flake8 pylint isort neovim
 
-ADD config/.vimrc /root/.vimrc
-RUN timeout 5m vim || true
+ADD init.vim /root/.config/nvim/init.vim
+COPY squashfs-root /root/squashfs-root
+RUN /root/squashfs-root/usr/bin/nvim -c PlugInstall -c UpdateRemotePlugins -c q! -c q! 
 
-CMD ["vim", "/src"]
+CMD ["/root/squashfs-root/usr/bin/nvim", "/src"]
