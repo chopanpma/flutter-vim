@@ -378,6 +378,8 @@ let g:airline_powerline_fonts = 0
 let g:airline_theme = 'bubblegum'
 let g:airline#extensions#whitespace#enabled = 0
 
+let NERDTreeShowHidden=1
+let NERDTreeIgnore=['\.DS_Store$', '\.git$']
 nmap ,e :call fzf#vim#files('', fzf#vim#with_preview('right'))<CR>
 
 " Modifies default Rg command so that it shows a preview window fullscreen
@@ -388,3 +390,9 @@ command! -bang -nargs=* Rg
             \ fzf#vim#with_preview('right'),
             \ <bang>0)
 map <C-f> :Rg!<CR>
+
+set shell=/usr/bin/zsh
+
+augroup groups
+    au FileType nerdtree setlocal nolist
+augroup END
