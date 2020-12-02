@@ -13,7 +13,7 @@ RUN pip install pep8 flake8 pyflakes isort yapf autopep8
 
 # Adds the .vimrc config file to the container.
 # If you want to add your own custom bindings or plugins, you must modify config/.vimrc and then rebuild the container.
-ADD config/.vimrc /root/.vimrc
+ADD vim-config/.vimrc /root/.vimrc
 
 # Runs vim when building the container, so that the required plugins are installed and stored in the container.
 RUN vim -E -s -u "/root/.vimrc" +PlugInstall +PlugClean +qall
