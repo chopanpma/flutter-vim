@@ -44,7 +44,9 @@ pvr
 
 ### Useful shortcuts:
 The format followed is: keybinding: description
+
 If you want to disable or add a particular keybinding, you have to modify config/.vimrc, then rebuild the image. After that, no further action is needed. 
+
 In normal mode:
 ```
 ,e: File fuzzy finder with file preview.
