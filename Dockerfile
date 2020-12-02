@@ -7,10 +7,10 @@ MAINTAINER Arturo Chong Lin
 RUN apt-get update \
     && apt-get install -y software-properties-common \
     curl vim exuberant-ctags git zsh fzf ripgrep xclip \
-    ack-grep vim-nox \
+    ack-grep vim-nox docker-compose \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
-    && pip install pep8 flake8 pyflakes isort yapf autopep8 \
+    && pip install pep8 flake8 pyflakes isort yapf autopep8 django \
     && sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" \
     && git clone https://github.com/bhilburn/powerlevel9k.git ~/.oh-my-zsh/custom/themes/powerlevel9k
     
