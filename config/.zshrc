@@ -104,5 +104,4 @@ POWERLEVEL9K_TIME_12HR=true
 
 export EDITOR='vim'
 export VISUAL='vim'
-
 export FZF_DEFAULT_COMMAND="find . -type f -not -path '*/\.git/*'"

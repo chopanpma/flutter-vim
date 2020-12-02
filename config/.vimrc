@@ -19,6 +19,9 @@ call plug#begin('~/.vim/plugged')
 " Code and files fuzzy finder
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim' 
+Plug 'zivyangll/git-blame.vim'
+Plug 'Chiel92/vim-autoformat'
+Plug 'Xuyuanp/nerdtree-git-plugin' " Adds icons next to modified files and folders in nerdtree.
 
 " Override configs by directory 
 Plug 'arielrossanigo/dir-configs-override.vim'
@@ -364,6 +367,8 @@ highlight DiffChange        cterm=bold ctermbg=none ctermfg=227
 highlight SignifySignAdd    cterm=bold ctermbg=237  ctermfg=119
 highlight SignifySignDelete cterm=bold ctermbg=237  ctermfg=167
 highlight SignifySignChange cterm=bold ctermbg=237  ctermfg=227
+let g:WebDevIconsNerdTreeBeforeGlyphPadding = " "
+let g:WebDevIconsNerdTreeAfterGlyphPadding = "  "
 
 " Window Chooser ------------------------------
 
@@ -378,9 +383,23 @@ let g:airline_powerline_fonts = 0
 let g:airline_theme = 'bubblegum'
 let g:airline#extensions#whitespace#enabled = 0
 
+" Custom settings
+set encoding=utf-8
+set noerrorbells
+set noswapfile
+set splitbelow
+set splitright
+set shell=/usr/bin/zsh
+set mouse=n
+set ttymouse=xterm2
+set clipboard=unnamedplus
+set incsearch
+
 let NERDTreeShowHidden=1
 let NERDTreeIgnore=['\.DS_Store$', '\.git$']
-nmap ,e :call fzf#vim#files('', fzf#vim#with_preview('right'))<CR>
+let $FZF_DEFAULT_COMMAND = "find . -type f -not -path '*/\.git/*'"
+let g:formatdef_autopep8 = "'autopep8 - --range '.a:firstline.' '.a:lastline"
+let g:formatters_python = ['autopep8']
 
 " Modifies default Rg command so that it shows a preview window fullscreen
 let $BAT_THEME = 'TwoDark'
@@ -389,10 +408,63 @@ command! -bang -nargs=* Rg
             \ 1,
             \ fzf#vim#with_preview('right'),
             \ <bang>0)
-map <C-f> :Rg!<CR>
 
-set shell=/usr/bin/zsh
+" Allows ALT + KEY combinations
+execute "set <M-r>=\er"
+execute "set <M-q>=\eq"
+execute "set <M-w>=\ew"
+execute "set <M-f>=\ef"
+execute "set <M-t>=\et"
+execute "set <M-g>=\eg"
+execute "set <M-e>=\ee"
+execute "set <M-m>=\em"
+execute "set <M-,>=\e,"
+execute "set <M-n>=\en"
+execute "set <M-b>=\eb"
+execute "set <M-s>=\es"
+execute "set <M-x>=\ex"
+execute "set <M-c>=\ec"
+execute "set <M-d>=\ed"
+
+
+" Custom keybindings
+nnoremap ,e :call fzf#vim#files('', fzf#vim#with_preview('right'))<CR>
+nnoremap we :w<CR>
+nnoremap vt :vert term<CR>
+nnoremap tv :term ++rows=12<CR>
+nnoremap ,,. :TagbarToggle<CR>
+nnoremap nl :set relativenumber!<CR>
+nnoremap <M-g> :<C-u>call gitblame#echo()<CR>
+nnoremap vf v$
+nnoremap lt :let $VIM_DIR=expand('%:p:h')<CR>:tab ter<CR>cd $VIM_DIR<CR>clear<CR>lazygit; exit<CR>
+nnoremap tt >:tab ter<CR>
+
+nmap <C-f> :Rg!<CR>
+nmap ,, <plug>NERDCommenterToggle
+
+map <M-x> :tabclose<CR>
+map <M-s> :,$s/
+map <M-n> :set number relativenumber<CR>
+map <M-w> :w<CR>
+map <M-q> :q<CR>
+map vv :vsp<CR>
+map vs :sp<CR>
+map q :q<CR>
+map qq :q!<CR>
+map lg :let $VIM_DIR=expand('%:p:h')<CR>:vertical terminal<CR>cd $VIM_DIR<CR>clear<CR>lazygit; exit<CR>
+map <M-t> :vert term <CR>
+map nh :noh<CR>
+map <M-f> :Autoformat<CR>
+
+inoremap <M-q> <Esc>
+inoremap kj <Esc>
+inoremap <C-v> <ESC>"+pa
+
+vnoremap <C-c> "+y
+
+vmap ,, <plug>NERDCommenterToggle
 
 augroup groups
     au FileType nerdtree setlocal nolist
+    au FileType python map <silent> <M-b> Oimport ipdb; ipdb.set_trace()<esc>
 augroup END
