@@ -22,6 +22,7 @@ Plug 'junegunn/fzf.vim'
 Plug 'zivyangll/git-blame.vim'
 Plug 'Chiel92/vim-autoformat'
 Plug 'Xuyuanp/nerdtree-git-plugin' " Adds icons next to modified files and folders in nerdtree.
+Plug 'ryanoasis/vim-devicons' " Adds fancy icons like in VSCode to nerdtree.
 
 " Override configs by directory 
 Plug 'arielrossanigo/dir-configs-override.vim'
@@ -394,6 +395,7 @@ set mouse=n
 set ttymouse=xterm2
 set clipboard=unnamedplus
 set incsearch
+set guifont=DroidSansMono\ Nerd\ Font\ 11
 
 let NERDTreeShowHidden=1
 let NERDTreeIgnore=['\.DS_Store$', '\.git$']
