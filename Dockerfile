@@ -1,11 +1,22 @@
 FROM python:latest
-MAINTAINER Francisco Castaneda (https://github.com/chopanpma/)
+MAINTAINER Arturo Chong Lin
 
-RUN apt update && apt install -y git curl python3-pip exuberant-ctags ack-grep
-RUN pip3 install pynvim flake8 pylint isort neovim
+# Installs dependencies
+RUN apt-get update \
+    && apt-get install -y software-properties-common \
+    curl vim exuberant-ctags git zsh fzf ripgrep \
+    ack-grep vim-nox \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-ADD init.vim /root/.config/nvim/init.vim
-COPY squashfs-root /root/squashfs-root
-RUN /root/squashfs-root/usr/bin/nvim -c PlugInstall -c UpdateRemotePlugins -c q! -c q! 
+RUN pip install pep8 flake8 pyflakes isort yapf autopep8
 
-CMD ["/root/squashfs-root/usr/bin/nvim", "/src"]
+# Adds the .vimrc config file to the container.
+# If you want to add your own custom bindings or plugins, you must modify config/.vimrc and then rebuild the container.
+ADD config/.vimrc /root/.vimrc
+
+# Runs vim when building the container, so that the required plugins are installed and stored in the container.
+RUN vim -E -s -u "/root/.vimrc" +PlugInstall +PlugClean +qall
+
+# Startup command
+CMD ["vim", "/src"]
